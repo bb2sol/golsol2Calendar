@@ -32,28 +32,42 @@ function App() {
   const [canvas, setCanvas] = React.useState(null);
 
   const [state, setState] = React.useState({
-    w:0,
-    h:0,
+    w:800,
+    h:1100,
     bg:null,
     date:null,
   })
   React.useEffect(()=>{
     setCanvas(canvasRef.current.getContext('2d'));
   },[]);
-
+  React.useEffect(()=>{
+    var backgroundImg = new Image();
+    backgroundImg.src = state.bg
+    var dateImg = new Image();
+    dateImg.src = state.date
+    backgroundImg.onload = ()=>{
+      canvas.drawImage(backgroundImg, 0, 0, state.w, state.h)
+      dateImg.onload=()=>{
+        canvas.drawImage(dateImg, 0, 0, state.w, state.h)
+      }
+    }
+  },[state])
   const setImg = (e)=>{
-    var img = new Image();
-    img.onload = function() {
-      canvas.drawImage(img, 0, 0, state.w, state.h);
-    };
-    img.src = e.value
+    // var img = new Image();
+    // img.onload = function() {
+    //   canvas.drawImage(img, 0, 0, state.w, state.h);
+    // };
+    // img.src = e.value
+    setState({...state, bg:e.value})
   }
   const setDate = (e)=>{
-    var img = new Image();
-    img.src = e.value
-    img.onload = () => {
-      canvas.drawImage(img, 0, 0, state.w, state.h);
-    };
+    // var img = new Image();
+    // img.src = e.value
+    // img.onload = () => {
+    //   canvas.drawImage(img, 0, 0, state.w, state.h);
+    // };
+    setState({...state, date:e.value})
+
   }
   const setSize = (v) => {
     setState({...state, w:v.value.width, h:v.value.height})
